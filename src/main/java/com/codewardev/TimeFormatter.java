@@ -1,5 +1,7 @@
 package com.codewardev;
 
+import java.time.Duration;
+
 // https://www.codewars.com/kata/52742f58faf5485cae000b9a/train/java
 
 public class TimeFormatter {
@@ -13,9 +15,13 @@ public class TimeFormatter {
 		int numSeconds = seconds;
 		StringBuilder output = new StringBuilder();
 		
-		if(seconds == 0) {
+		if(numSeconds == 0) {
 			return "now";
 		}
+		
+		Duration duration = Duration.ofSeconds((long)numSeconds);
+		System.out.println("Minutes: "+duration.toMinutes());
+		System.out.println("Hours: "+duration.toHours());
 		
 		int remainder = numSeconds % YEARS;
 		String year="";
