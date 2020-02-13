@@ -14,9 +14,7 @@ public class TimeFormatter {
 	public static String formatDuration(int seconds) {
 		StringBuilder output = new StringBuilder();
 		
-		if(seconds == 0) {
-			return "now";
-		}
+		if(seconds == 0) return "now";
 		
 		Duration duration = Duration.ofSeconds((long) seconds);
 		int Year = 0, Day = 0, Hour = 0, Minute = 0, Second = 0;
@@ -42,8 +40,7 @@ public class TimeFormatter {
 			}
 		}
 
-		boolean hasFirst = false;
-		boolean hasNext = false;
+		boolean hasFirst = false, hasNext = false;
 		if(Year > 0) {
 			output.append(Year == 1? "1 year":Year+" years");
 			hasFirst = true;
