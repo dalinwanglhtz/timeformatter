@@ -1,8 +1,8 @@
 package com.codewardev;
 
-import java.time.Duration;
+//https://www.codewars.com/kata/52742f58faf5485cae000b9a/train/java
 
-// https://www.codewars.com/kata/52742f58faf5485cae000b9a/train/java
+import java.time.Duration;
 
 public class TimeFormatter {
 	
@@ -12,82 +12,67 @@ public class TimeFormatter {
 	private static final int YEARS = DAYS*365;
 
 	public static String formatDuration(int seconds) {
-		int numSeconds = seconds;
 		StringBuilder output = new StringBuilder();
 		
-		if(numSeconds == 0) {
+		if(seconds == 0) {
 			return "now";
 		}
 		
-		Duration duration = Duration.ofSeconds((long)numSeconds);
-		System.out.println("Minutes: "+duration.toMinutes());
-		System.out.println("Hours: "+duration.toHours());
-		
-		int remainder = numSeconds % YEARS;
-		String year="";
-		if(numSeconds / YEARS > 0) {
-			year = (numSeconds / YEARS == 1? "1 year":(numSeconds / YEARS)+" years");
-			output.append(year);
-		}
-		
-		
-		numSeconds = remainder;
-		remainder = numSeconds % DAYS;
-		String day="";
-		if(numSeconds / DAYS > 0) {
-			day = (numSeconds / DAYS == 1? "1 day":(numSeconds / DAYS)+" days");
-			if(!year.isEmpty()) {
-				if(remainder > 0) {
-					output.append(", "+day);
-				} else {
-					output.append(" and "+day);
-				}
+		Duration duration = Duration.ofSeconds((long) seconds);
+		int Year = 0, Day = 0, Hour = 0, Minute = 0, Second = 0;
+		while(duration.getSeconds() > 0) {
+			if(YEARS <= duration.getSeconds()) {
+				Year++;
+				duration = duration.minusSeconds(YEARS);
+			} else
+			if(DAYS <= duration.getSeconds()) {
+				Day++;
+				duration = duration.minusSeconds(DAYS);
+			} else
+			if(HOURS <= duration.getSeconds()) {
+				Hour++;
+				duration = duration.minusSeconds(HOURS);
+			} else
+			if(MINUTES <= duration.getSeconds()) {
+				Minute++;
+				duration = duration.minusSeconds(MINUTES);
 			} else {
-				output.append(day);
+				Second++;
+				duration = duration.minusSeconds(1);
 			}
 		}
-		
-		
-		numSeconds = remainder;
-		remainder = numSeconds % HOURS;
-		String hour="";
-		if(numSeconds / HOURS > 0) {
-			hour = (numSeconds / HOURS == 1? "1 hour":(numSeconds / HOURS)+" hours");
-			if(!year.isEmpty() || !day.isEmpty()) {
-				if(remainder > 0) {
-					output.append(", "+hour);
-				} else {
-					output.append(" and "+hour);
-				}
-			} else {
-				output.append(hour);
-			}
+
+		boolean hasFirst = false;
+		boolean hasNext = false;
+		if(Year > 0) {
+			output.append(Year == 1? "1 year":Year+" years");
+			hasFirst = true;
+			hasNext = Hour > 0? true:false;
 		}
 		
-		numSeconds = remainder;
-		remainder = numSeconds % MINUTES;
-		String minute="";
-		if(numSeconds / MINUTES > 0) {
-			minute = (numSeconds / MINUTES == 1? "1 minute":(numSeconds / MINUTES)+" minutes");
-			if(!year.isEmpty() || !day.isEmpty() || !hour.isEmpty()) {
-				if(remainder > 0) {
-					output.append(", "+minute);
-				} else {
-					output.append(" and "+minute);
-				}
-			} else {
-				output.append(minute);
-			}
+		if(Day > 0) {
+			if(hasFirst) output.append(hasNext?", ":" and ");
+			output.append((Day == 1? "1 day":Day+" days"));
+			hasFirst = true;
+			hasNext = Minute > 0? true:false;
 		}
 		
-		String second="";
-		if(remainder > 0) {
-			second = (remainder == 1? "1 second":remainder+" seconds");
-			if(!year.isEmpty() || !day.isEmpty() || !hour.isEmpty() || !minute.isEmpty()) {
-				output.append(" and "+second);
-			} else {
-				output.append(second);
-			}
+		if(Hour > 0) {
+			if(hasFirst) output.append(hasNext?", ":" and ");
+			output.append((Hour == 1? "1 hour":Hour+" hours"));
+			hasFirst = true;
+			hasNext = Second > 0? true:false;
+		}
+		
+		if(Minute > 0) {
+			if(hasFirst) output.append(hasNext?", ":" and ");
+			output.append((Minute == 1? "1 minute":Minute+" minutes"));
+			hasFirst = true;
+		}
+		
+		if(Second > 0) {
+			if(hasFirst) output.append(" and ");
+			output.append((Second == 1? "1 second":Second+" seconds"));
 		}
 		
 		System.out.println("Time is: "+output.toString());
