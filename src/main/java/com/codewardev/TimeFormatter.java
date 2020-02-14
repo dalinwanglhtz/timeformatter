@@ -44,14 +44,14 @@ public class TimeFormatter {
 		if(Year > 0) {
 			output.append(Year == 1? "1 year":Year+" years");
 			hasFirst = true;
-			hasNext = Hour > 0? true:false;
+			hasNext = Hour > 0 || Minute > 0 || Second > 0? true:false;
 		}
 		
 		if(Day > 0) {
 			if(hasFirst) output.append(hasNext?", ":" and ");
 			output.append((Day == 1? "1 day":Day+" days"));
 			hasFirst = true;
-			hasNext = Minute > 0? true:false;
+			hasNext = Minute > 0 || Second > 0? true:false;
 		}
 		
 		if(Hour > 0) {
@@ -71,8 +71,6 @@ public class TimeFormatter {
 			if(hasFirst) output.append(" and ");
 			output.append((Second == 1? "1 second":Second+" seconds"));
 		}
-		
-		System.out.println("Time is: "+output.toString());
 		
 		return output.toString();
 	}
